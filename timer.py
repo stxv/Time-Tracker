@@ -8,13 +8,18 @@ def split_window_title(title):
 def user_active_window():
     last_window = None
     while True:
-        window = pgw.getActiveWindow()
-        title = window.title
-        active_window = split_window_title(title)
+        try:
+            window = pgw.getActiveWindow()
+            if window is not None:
+                title = window.title
+                active_window = split_window_title(title)
 #last_window starts as none, then active window is compared to last window (active window(anything) is definitely not equal to None)), print active then replace last window.
-        if active_window != last_window:
-            print(active_window)
-            last_window = active_window
-        time.sleep(1)
-        
+                if active_window == "Task Switching":
+                    continue
+                if active_window != last_window:
+                    print(active_window)
+                    last_window = active_window
+
+        except pgw.PyGetWindowException:
+            pass
 user_active_window()
