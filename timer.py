@@ -18,23 +18,19 @@ def user_active_window():
                 title = window.title
                 active_window = split_window_title(title)
 #
-                """if active_window == "Google Chrome":
-                    if google_title_split(title) != last_google_tab:
-                        print(google_title_split(title))
-                        last_google_tab = google_title_split(title)"""
+                if active_window == "Google Chrome":
+                    tab_info = google_title_split(title)
+                    if tab_info != last_google_tab:
+                        print(tab_info)
+                        last_google_tab = tab_info
 #last_window starts as none, then active window is compared to last window (active window(anything) is definitely not equal to None)), print active then replace last window.
                 if active_window == "Task Switching":
                     active_window == last_window
                     continue
                 if active_window != last_window:
-                    if active_window == "Google Chrome":
-                        if google_title_split(title) != last_google_tab:
-                            print(google_title_split(title))
-                    else:
                         print(active_window)
-                    last_window = active_window
+                        last_window = active_window
 
         except pgw.PyGetWindowException:
             pass
 user_active_window()
-# Code gets window names. Sometimes in the google tabs, the format of the tab name will be different.
