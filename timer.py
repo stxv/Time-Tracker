@@ -21,16 +21,21 @@ def user_active_window():
                 if active_window == "Task Switching":
                     active_window == last_window
                     pass
+                if active_window != last_window:
+                    print(active_window)
+                    last_window = active_window
+                    tab_info = google_title_split(title)
+                    if tab_info == last_google_tab:
+                        print(f"Still on tab: {tab_info}")
+                        last_google_tab = tab_info
+                        pass
+
                 if active_window == "Google Chrome":
                     time.sleep(1)
                     tab_info = google_title_split(title)
                     if tab_info != last_google_tab:
                         print(f"Google Chrome tab: {tab_info}")
                         last_google_tab = tab_info
-
-                if active_window != last_window:
-                        print(active_window)
-                        last_window = active_window
 #If it's google, get the tab info, if last tab is not same as new tab, print new info
 #last_window starts as none, then active window is compared to last window (active window(anything) is definitely not equal to None)), print active then replace last window.
 
