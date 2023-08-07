@@ -2,18 +2,11 @@ import pygetwindow as pgw
 import time
 import json
 
-<<<<<<< HEAD
 # Splits window titles
 def split_window_title(title):
     title_parts = title.split(' - ')
     return title_parts[-1]
 # Gets Google tab information
-=======
-def split_window_title(title):
-    title_parts = title.split(' - ')
-    return title_parts[-1]
-
->>>>>>> aa4d01f8a64df87bfc71ce7a74d84b16ad8cdf57
 def google_title_split(title):
     title_parts = title.split(' - ')
     return title_parts[-2]
@@ -100,8 +93,4 @@ def user_active_window():
         except pgw.PyGetWindowException:
             pass
 
-<<<<<<< HEAD
 user_active_window()
-=======
-user_active_window()
->>>>>>> aa4d01f8a64df87bfc71ce7a74d84b16ad8cdf57
