@@ -1,6 +1,10 @@
 import pygetwindow as pgw
 import time
 import json
+from flask import Flask, render_template
+
+app = Flask(__name__)
+
 
 # Splits window titles
 def split_window_title(title):
@@ -15,11 +19,16 @@ def save_time_data(data):
     with open('time_tracker.json', 'w') as json_file:
         json.dump(data, json_file, indent=4)
 
+@app.route("/")
+def home():
+    return render_template("index.html")
+
 def user_active_window():
     last_window = None
     last_google_tab = None
     start_time = time.time()
     tracked_data = {}  # Dictionary to store tracked data
+
 # IDK what this does yet
     try:
         with open('time_tracker.json', 'r') as json_file:
@@ -92,5 +101,7 @@ def user_active_window():
 
         except pgw.PyGetWindowException:
             pass
-
+if __name__ == "__main__":
+    with app.app_context():
+        app.run(debug=True)
 user_active_window()
