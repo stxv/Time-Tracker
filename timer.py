@@ -1,15 +1,12 @@
 import pygetwindow as pgw
 import time
 import json
-from flask import Flask, render_template
-
-app = Flask(__name__)
-
 
 # Splits window titles
 def split_window_title(title):
     title_parts = title.split(' - ')
     return title_parts[-1]
+
 # Gets Google tab information
 def google_title_split(title):
     title_parts = title.split(' - ')
@@ -19,17 +16,13 @@ def save_time_data(data):
     with open('time_tracker.json', 'w') as json_file:
         json.dump(data, json_file, indent=4)
 
-@app.route("/")
-def home():
-    return render_template("index.html")
-
 def user_active_window():
     last_window = None
     last_google_tab = None
     start_time = time.time()
     tracked_data = {}  # Dictionary to store tracked data
 
-# IDK what this does yet
+# Loads previous tracked data, if doesn't exist then do nothing.
     try:
         with open('time_tracker.json', 'r') as json_file:
             tracked_data = json.load(json_file)
@@ -68,8 +61,7 @@ def user_active_window():
                                 tracked_data[last_window] += elapsed_time
                             else:
                                 tracked_data[last_window] += elapsed_time
-
-                        save_time_data(tracked_data)
+                                save_time_data(tracked_data)
                     # Prints the application the user is on
                     print(f"Application: {active_window}\n")
                     # Sets the current window to the last window for future use.
@@ -77,14 +69,16 @@ def user_active_window():
                     # Reset the last_google_tab when switching to a new application, this acutally does help
                     last_google_tab = None 
                     start_time = time.time()
-####################################################################################################################################
+
                 # Gets Google tab information to display
                 if active_window == "Google Chrome":
                     time.sleep(1)
                     tab_info = google_title_split(title)
                     # For when user remains on a tab, will delete soon
                     if tab_info == last_google_tab:
-                        print(f"\033AStill on the tab: {tab_info}\n")
+                        # Line prints out application you're still on each second.
+                        #print(f"\033AStill on the tab: {tab_info}\n")
+                        continue
                     else:
                         # If the user doesn't remain on the same tab, move to this
                         if last_google_tab is not None:
@@ -94,14 +88,11 @@ def user_active_window():
                             tracked_data.setdefault("Google Chrome", {}).setdefault(last_google_tab, 0)
                             tracked_data["Google Chrome"][last_google_tab] += elapsed_time
                             save_time_data(tracked_data)
-
+                        # Prints tab
                         print(f"Google Chrome tab: {tab_info}\n")
                         last_google_tab = tab_info
                         start_time = time.time()
 
         except pgw.PyGetWindowException:
             pass
-if __name__ == "__main__":
-    with app.app_context():
-        app.run(debug=True)
 user_active_window()
